@@ -14,3 +14,21 @@ import json
 with open("../../30DayQuakes.json", "r") as datafile:
     data = json.load(datafile)
     
+#number 1
+print("Number of quakes: ", len(data["features"]))
+
+#number 2
+print("Number of quakes felt by at least 100 people: ", len([x for x in data["features"] if x["properties"]["felt"] is not None and x["properties"]["felt"] >= 100]))
+
+#number 3
+try:
+    print("Name of place whose quake was felt by the most people: ", max((x for x in data.get("features", []) if x.get("properties", {}).get("felt") is not None), key=lambda x: x["properties"]["felt"])["properties"]["place"])
+except (ValueError, KeyError, TypeError):
+    print("An error occurred while processing the data.")
+
+
+#number 4
+print("Top 10 most significant events: ")
+for x in sorted(data["features"], key=lambda x: x["properties"]["sig"], reverse=True)[:10]:
+    print(x["properties"]["title"], x["properties"]["sig"])
+
